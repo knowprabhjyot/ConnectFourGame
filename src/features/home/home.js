@@ -99,6 +99,13 @@ export default class HomeComponent extends Component {
         }
     }
 
+
+
+    /**
+     *
+     * @memberof HomeComponent
+     * Fetches employee list from backend
+     */
     getEmployeeList() {
         axios.get('http://dummy.restapiexample.com/api/v1/employees').then((response) => {
             this.setState({
@@ -112,6 +119,13 @@ export default class HomeComponent extends Component {
         })
     }
 
+
+
+    /**
+     *
+     * @memberof HomeComponent
+     * Pushes random picked value from employeelist
+     */
     modifyFilteredEmployeeList() {
         let employeeList = this.state.employeeList;
         let randomIndex = Math.floor(Math.random() * employeeList.length - 1) + 1;
@@ -122,6 +136,12 @@ export default class HomeComponent extends Component {
         })
     }
 
+
+    /**
+     *
+     * @memberof HomeComponent
+     * Resets game when grid is full
+     */
     resetGame() {
         this.setState({
             boxSize: this.make2DArray(3),
