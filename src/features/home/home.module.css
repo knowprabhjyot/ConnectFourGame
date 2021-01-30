@@ -24,3 +24,13 @@ h1 {
     cursor: pointer;;
     background-color: rgb(204, 203, 203);
 }
+
+.undoContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.undoContainer button {
+    height: min-content;
+}

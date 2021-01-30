@@ -1,4 +1,4 @@
-import { current } from '@reduxjs/toolkit';
+// import { current } from '@reduxjs/toolkit';
 import axios from 'axios';
 import React, { Component } from 'react';
 import BoxComponent from '../box/box';
@@ -12,7 +12,8 @@ export default class HomeComponent extends Component {
         isPlayer1: true,
         employeeList: [],
         filteredEmployeeList: [],
-        totalClicks: 0
+        totalClicks: 0,
+        sequenceOfClicks: []
     }
 
     componentDidMount() {
@@ -44,16 +45,18 @@ export default class HomeComponent extends Component {
     updateBox(isPlayer1, index, valIndex) {
         let array = this.state.boxSize;
         if (array[index][valIndex].clickedByPlayer1 === undefined && this.state.employeeList.length > 0) {
-            array[index][valIndex] = { clickedByPlayer1: isPlayer1 }
+            array[index][valIndex] = { clickedByPlayer1: isPlayer1, x: index, y: valIndex }
+            let sequenceOfClicks = this.state.sequenceOfClicks;
+            sequenceOfClicks.push(array[index][valIndex]);
             this.setState({
                 boxSize: array,
                 isPlayer1: !isPlayer1,
-                totalClicks: this.state.totalClicks + 1
+                totalClicks: this.state.totalClicks + 1,
+                sequenceOfClicks: sequenceOfClicks
             });
 
             this.modifyFilteredEmployeeList();
             let isArrayFull = this.state.totalClicks === 8 ? true : false
-            console.log(isArrayFull, 'array value');
             if (isArrayFull) {
                 this.resetGame();
             }
@@ -76,13 +79,11 @@ export default class HomeComponent extends Component {
     modifyFilteredEmployeeList() {
         let employeeList = this.state.employeeList;
         let randomIndex = Math.floor(Math.random() * employeeList.length - 1)  + 1;
-        console.log(randomIndex, 'random');
         let filteredEmployeeList = this.state.filteredEmployeeList;
         filteredEmployeeList.push(employeeList[randomIndex]);
         this.setState({
             filteredEmployeeList: filteredEmployeeList
         })
-
     }
 
     resetGame() {
@@ -90,7 +91,22 @@ export default class HomeComponent extends Component {
         this.setState({
             boxSize: this.make2DArray(3),
             isPlayer1: true,
-            totalClicks: 0
+            totalClicks: 0,
+            filteredEmployeeList: []
+        })
+    }
+
+    undoLastMove = () => {
+        let filteredEmployeeList = this.state.filteredEmployeeList;
+        let sequenceOfClicks = this.state.sequenceOfClicks;
+        let previousMove = sequenceOfClicks.pop();
+        let boxSize = this.state.boxSize;
+        filteredEmployeeList.pop();
+        boxSize[previousMove.x][previousMove.y] = previousMove.x+previousMove.y;
+        this.setState({
+            filteredEmployeeList: filteredEmployeeList,
+            totalClicks: this.state.totalClicks - 1,
+            boxSize: boxSize
         })
     }
 
@@ -119,6 +135,10 @@ export default class HomeComponent extends Component {
                 }
                 </div>
                 <div>
+                    <div className={styles.undoContainer}>
+                    <h1>Employee List</h1>
+                    <button disabled={this.state.filteredEmployeeList.length === 0} onClick={this.undoLastMove} >Undo Last Move</button>
+                    </div>
                     <EmployeeList data={this.state.filteredEmployeeList} />
                 </div>
                 </div>
