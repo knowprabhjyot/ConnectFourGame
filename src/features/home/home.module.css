@@ -5,9 +5,22 @@
 }
 
 .root {
-    width: 50%;
+    display: grid;
+    grid-template-columns: 40% 40%;
+    width: 100%;
+    grid-gap: 32px;
+    justify-content: center;
 }
 
 h1 {
     text-align: center;
+}
+
+.fullWidth {
+    width: 100%;
+}
+
+.boxSelection:hover {
+    cursor: pointer;;
+    background-color: rgb(204, 203, 203);
 }
