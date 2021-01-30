@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/ConnectFourGame/static/css/main.c8d2bac7.chunk.css",
-    "main.js": "/ConnectFourGame/static/js/main.ff17ca28.chunk.js",
-    "main.js.map": "/ConnectFourGame/static/js/main.ff17ca28.chunk.js.map",
+    "main.css": "/ConnectFourGame/static/css/main.d86e8f95.chunk.css",
+    "main.js": "/ConnectFourGame/static/js/main.27324cf2.chunk.js",
+    "main.js.map": "/ConnectFourGame/static/js/main.27324cf2.chunk.js.map",
     "runtime-main.js": "/ConnectFourGame/static/js/runtime-main.3909bb58.js",
     "runtime-main.js.map": "/ConnectFourGame/static/js/runtime-main.3909bb58.js.map",
     "static/js/2.c680a31b.chunk.js": "/ConnectFourGame/static/js/2.c680a31b.chunk.js",
     "static/js/2.c680a31b.chunk.js.map": "/ConnectFourGame/static/js/2.c680a31b.chunk.js.map",
     "index.html": "/ConnectFourGame/index.html",
-    "static/css/main.c8d2bac7.chunk.css.map": "/ConnectFourGame/static/css/main.c8d2bac7.chunk.css.map",
+    "static/css/main.d86e8f95.chunk.css.map": "/ConnectFourGame/static/css/main.d86e8f95.chunk.css.map",
     "static/js/2.c680a31b.chunk.js.LICENSE.txt": "/ConnectFourGame/static/js/2.c680a31b.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.3909bb58.js",
     "static/js/2.c680a31b.chunk.js",
-    "static/css/main.c8d2bac7.chunk.css",
-    "static/js/main.ff17ca28.chunk.js"
+    "static/css/main.d86e8f95.chunk.css",
+    "static/js/main.27324cf2.chunk.js"
   ]
 }
