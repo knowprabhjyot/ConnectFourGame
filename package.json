@@ -2,6 +2,7 @@
   "name": "connectfourgame",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://knowprabhjyot.github.io/ConnectFourGame",
   "dependencies": {
     "@reduxjs/toolkit": "^1.5.0",
     "@testing-library/jest-dom": "^4.2.4",

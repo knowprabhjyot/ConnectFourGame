@@ -107,7 +107,7 @@ export default class HomeComponent extends Component {
      * Fetches employee list from backend
      */
     getEmployeeList() {
-        axios.get('http://dummy.restapiexample.com/api/v1/employees').then((response) => {
+        axios.get('https://dummy.restapiexample.com/api/v1/employees').then((response) => {
             this.setState({
                 employeeList: response.data.data
             })
