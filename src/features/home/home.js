@@ -7,12 +7,20 @@ import styles from './home.module.css';
 
 export default class HomeComponent extends Component {
 
+
+    /**
+     * Global State, boxSize : 2D Array, for drawing UI
+     * isPlayer1 : checks whose chance is it
+     * employeeList : List fetched from API
+     * fiteredEmployeeList: List filtered from employee list and pushed on box click
+     * SequenceOfCLicks: Queue for keeping track of moves
+     * @memberof HomeComponent
+     */
     state = {
         boxSize: [],
         isPlayer1: true,
         employeeList: [],
         filteredEmployeeList: [],
-        totalClicks: 0,
         sequenceOfClicks: []
     }
 
@@ -24,6 +32,14 @@ export default class HomeComponent extends Component {
         this.getEmployeeList();
     }
 
+
+    /**
+     *
+     * @param {*} size
+     * @returns
+     * @memberof HomeComponent
+     * Makes 2D Array to be set for BoardSize
+     */
     make2DArray(size) {
         let array = new Array(size);
         for (let i = 0; i < size; i++) {
@@ -33,6 +49,14 @@ export default class HomeComponent extends Component {
         return array;
     }
 
+
+    /**
+     *
+     * @param {*} array
+     * @returns
+     * @memberof HomeComponent
+     * Adds index value to the array indexes
+     */
     addValue2Darray(array) {
         for (let i = 0; i < array.length; i++) {
             for (let j = 0; j < array[i].length; j++) {
@@ -42,23 +66,35 @@ export default class HomeComponent extends Component {
         return array;
     }
 
-    updateBox(isPlayer1, index, valIndex) {
-        let array = this.state.boxSize;
-        if (array[index][valIndex].clickedByPlayer1 === undefined && this.state.employeeList.length > 0) {
-            array[index][valIndex] = { clickedByPlayer1: isPlayer1, x: index, y: valIndex }
-            let sequenceOfClicks = this.state.sequenceOfClicks;
-            sequenceOfClicks.push(array[index][valIndex]);
-            this.setState({
-                boxSize: array,
-                isPlayer1: !isPlayer1,
-                totalClicks: this.state.totalClicks + 1,
-                sequenceOfClicks: sequenceOfClicks
-            });
 
-            this.modifyFilteredEmployeeList();
-            let isArrayFull = this.state.totalClicks === 8 ? true : false
-            if (isArrayFull) {
-                this.resetGame();
+    /**
+     *
+     * @param {*} isPlayer1
+     * @param {*} index
+     * @param {*} yIndex
+     * @memberof HomeComponent
+     * Called when player clicks on boxes
+     */
+    updateBox(isPlayer1, xIndex, yIndex) {
+        let array = this.state.boxSize;
+
+        // If block to check if x index can be clicked or not
+        if (xIndex === 2 || array[xIndex + 1][yIndex].clickedByPlayer1 !== undefined) {
+            if (array[xIndex][yIndex].clickedByPlayer1 === undefined && this.state.employeeList.length > 0) {
+                array[xIndex][yIndex] = { clickedByPlayer1: isPlayer1, x: xIndex, y: yIndex }
+                let sequenceOfClicks = this.state.sequenceOfClicks;
+                sequenceOfClicks.push(array[xIndex][yIndex]);
+                this.setState({
+                    boxSize: array,
+                    isPlayer1: !isPlayer1,
+                    sequenceOfClicks: sequenceOfClicks
+                });
+
+                this.modifyFilteredEmployeeList();
+                let isArrayFull = this.state.sequenceOfClicks.length === 9 ? true : false
+                if (isArrayFull) {
+                    this.resetGame();
+                }
             }
         }
     }
@@ -68,8 +104,8 @@ export default class HomeComponent extends Component {
             this.setState({
                 employeeList: response.data.data
             })
-        }).catch((error) => {
-            alert('Error from API')
+        }).catch(() => {
+            alert('Error from API, Please refresh')
             this.setState({
                 employeeList: []
             })
@@ -78,7 +114,7 @@ export default class HomeComponent extends Component {
 
     modifyFilteredEmployeeList() {
         let employeeList = this.state.employeeList;
-        let randomIndex = Math.floor(Math.random() * employeeList.length - 1)  + 1;
+        let randomIndex = Math.floor(Math.random() * employeeList.length - 1) + 1;
         let filteredEmployeeList = this.state.filteredEmployeeList;
         filteredEmployeeList.push(employeeList[randomIndex]);
         this.setState({
@@ -87,26 +123,33 @@ export default class HomeComponent extends Component {
     }
 
     resetGame() {
-        alert('Game over');
         this.setState({
             boxSize: this.make2DArray(3),
             isPlayer1: true,
-            totalClicks: 0,
-            filteredEmployeeList: []
+            filteredEmployeeList: [],
+            sequenceOfClicks: []
         })
+        alert('Game over');
     }
 
+
+
+    /**
+     *
+     * @memberof HomeComponent
+     * undo the last move
+     */
     undoLastMove = () => {
         let filteredEmployeeList = this.state.filteredEmployeeList;
         let sequenceOfClicks = this.state.sequenceOfClicks;
         let previousMove = sequenceOfClicks.pop();
         let boxSize = this.state.boxSize;
         filteredEmployeeList.pop();
-        boxSize[previousMove.x][previousMove.y] = previousMove.x+previousMove.y;
+        boxSize[previousMove.x][previousMove.y] = previousMove.x + previousMove.y;
         this.setState({
             filteredEmployeeList: filteredEmployeeList,
-            totalClicks: this.state.totalClicks - 1,
-            boxSize: boxSize
+            boxSize: boxSize,
+            sequenceOfClicks: sequenceOfClicks
         })
     }
 
@@ -115,32 +158,32 @@ export default class HomeComponent extends Component {
             <div className={styles.fullWidth}>
                 <h1>{this.state.isPlayer1 ? `Player 1` : `Player 2`}  Your Chance</h1>
                 <div className={styles.root}>
-                <div className={styles.subRoot}>
-                {
-                    this.state.boxSize.map((item, index) => {
-                        return (
-                            <div key={index} className={styles.container}>
-                                {
-                                    item.map((cell, valIndex) => {
-                                        return (
-                                            <div className={styles.boxSelection} key={valIndex} onClick={() => this.updateBox(this.state.isPlayer1, index, valIndex)}>
-                                                <BoxComponent data={this.state.boxSize[index][valIndex]} />
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </div>
-                        )
-                    })
-                }
-                </div>
-                <div>
-                    <div className={styles.undoContainer}>
-                    <h1>Employee List</h1>
-                    <button disabled={this.state.filteredEmployeeList.length === 0} onClick={this.undoLastMove} >Undo Last Move</button>
+                    <div className={styles.subRoot}>
+                        {
+                            this.state.boxSize.map((item, xIndex) => {
+                                return (
+                                    <div key={xIndex} className={styles.container}>
+                                        {
+                                            item.map((cell, yIndex) => {
+                                                return (
+                                                    <div className={(xIndex === 2 || this.state.boxSize[xIndex + 1][yIndex].clickedByPlayer1 !== undefined) ? styles.boxSelection : styles.boxSelectionInactive} key={yIndex} onClick={() => this.updateBox(this.state.isPlayer1, xIndex, yIndex)}>
+                                                        <BoxComponent data={this.state.boxSize[xIndex][yIndex]} />
+                                                    </div>
+                                                )
+                                            })
+                                        }
+                                    </div>
+                                )
+                            })
+                        }
                     </div>
-                    <EmployeeList data={this.state.filteredEmployeeList} />
-                </div>
+                    <div>
+                        <div className={styles.undoContainer}>
+                            <h1>Employee List</h1>
+                            <button disabled={this.state.filteredEmployeeList.length === 0} onClick={this.undoLastMove} >Undo Last Move</button>
+                        </div>
+                        <EmployeeList data={this.state.filteredEmployeeList} />
+                    </div>
                 </div>
             </div>
         )

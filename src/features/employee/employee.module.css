@@ -1,3 +1,12 @@
 .employee {
     margin: 4px 8px;
 }
+
+.employee:nth-child(even) {
+    background-color: #d6d6d6;
+    padding: 8px;
+}
+
+h4 {
+    margin: 0;
+}

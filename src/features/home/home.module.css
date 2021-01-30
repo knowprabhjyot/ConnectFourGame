@@ -2,6 +2,7 @@
     display: grid;
     grid-template-columns: 33% 33% 33%;
     justify-content: center;
+    /* background-color: black; */
 }
 
 .root {
@@ -21,8 +22,15 @@ h1 {
 }
 
 .boxSelection:hover {
-    cursor: pointer;;
-    background-color: rgb(204, 203, 203);
+    cursor: pointer;
+    background-color: #7ebc7e !important;
+    animation: myfirst 5s 2;
+    animation-direction: alternate;
+}
+
+.boxSelectionInactive:hover {
+    cursor: not-allowed;
+    background-color: #d95858 !important; 
 }
 
 .undoContainer {
@@ -32,5 +40,5 @@ h1 {
 }
 
 .undoContainer button {
-    height: min-content;
+    height: 40px;
 }

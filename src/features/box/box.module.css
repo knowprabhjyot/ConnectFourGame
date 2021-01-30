@@ -1,12 +1,30 @@
 .box {
-    border: 1px solid black;
+    border: 5px solid white;
     height: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.image {
-    width: 80%;
+img {
+    width: 120px;
     height: 150px;
+    border-radius: 50%;
+    animation-duration: 2s;
+    animation-name: slidein;
+    transition: all ease-in-out;
+}
+
+
+@keyframes slidein {
+    0% {
+      position: absolute;
+      top: 0%;
+      width: 120px;
+    }
+  
+    100% {
+     top: 100%;
+     width: 120px;
+    }
 }
