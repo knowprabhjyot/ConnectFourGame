@@ -1,4 +1,13 @@
 .container {
     display: grid;
     grid-template-columns: 33% 33% 33%;
+    justify-content: center;
+}
+
+.root {
+    width: 50%;
+}
+
+h1 {
+    text-align: center;
 }

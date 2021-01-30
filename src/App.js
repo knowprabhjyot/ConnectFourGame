@@ -5,7 +5,7 @@ import HomeComponent from './features/home/home';
 
 function App() {
   return (
-    <div className="App">
+    <div className="app">
       <HomeComponent />
     </div>
   );
